@@ -1,13 +1,15 @@
 import { programsSource } from "@/lib/source";
+import { getMDXComponents } from "@/mdx-components";
+import { createRelativeLink } from "fumadocs-ui/mdx";
 import {
-  DocsPage,
   DocsBody,
   DocsDescription,
+  DocsPage,
   DocsTitle,
 } from "fumadocs-ui/page";
+import type { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
-import { createRelativeLink } from "fumadocs-ui/mdx";
-import { getMDXComponents } from "@/mdx-components";
+import { HowTo, WithContext } from "schema-dts";
 
 export default async function Page(props: {
   params: Promise<{ slug?: string[] }>;
@@ -17,6 +19,21 @@ export default async function Page(props: {
   if (!page) notFound();
 
   const MDXContent = page.data.body;
+
+  const jsonLd: WithContext<HowTo> = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: page.data.title,
+    description: page.data.description,
+    provider: {
+      "@type": "Organization",
+      name: "Javaistic",
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://javaistic.vercel.app/programs/${page.path}`,
+    },
+  };
 
   return (
     <DocsPage
@@ -36,6 +53,12 @@ export default async function Page(props: {
           })}
         />
       </DocsBody>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
     </DocsPage>
   );
 }
@@ -44,11 +67,17 @@ export async function generateStaticParams() {
   return programsSource.generateParams();
 }
 
-export async function generateMetadata(props: {
+type Props = {
   params: Promise<{ slug?: string[] }>;
-}) {
-  const params = await props.params;
-  const page = programsSource.getPage(params.slug);
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const { slug } = await params;
+  const page = programsSource.getPage(slug);
   if (!page) notFound();
 
   return {
@@ -57,7 +86,8 @@ export async function generateMetadata(props: {
     openGraph: {
       title: `${page.data.title} - Javaistic`,
       description: page.data.description,
-      sitename: "Javaistic",
+      siteName: "Javaistic",
+      url: `https://javaistic.vercel.app/programs/${page.path}`,
       images: `https://og-javaistic.vercel.app/og?title=${page.data.title}`,
     },
     twitter: {
