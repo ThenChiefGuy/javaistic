@@ -38,7 +38,7 @@ export default async function Page(props: {
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://javaistic.vercel.app/docs/${page.path}`,
+      "@id": `https://javaistic.vercel.app/docs/${page.url}`,
     },
   };
 
@@ -100,7 +100,7 @@ export async function generateMetadata(
       title: `${page.data.title} - Javaistic`,
       description: page.data.description,
       siteName: "Javaistic",
-      url: `https://javaistic.vercel.app/docs/${page.path}`,
+      url: `https://javaistic.vercel.app/docs/${page.url}`,
       images: `https://og-javaistic.vercel.app/og?title=${page.data.title}`,
     },
     twitter: {
