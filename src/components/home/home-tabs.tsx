@@ -5,6 +5,7 @@ import {
   type UnderlineTab,
 } from "@/components/home/underline-tabs";
 import { useDarkMode } from "@/hooks/useDarkMode";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { SVGProps } from "react";
 
@@ -57,10 +58,16 @@ export default function HomeTabs() {
   ];
 
   return (
-    <div className="flex w-full flex-col items-center">
+    <motion.div
+      className="flex w-full flex-col items-center"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
+    >
       {/* Top Tab Navigation */}
       <UnderlineTabs items={TAB_ITEMS} defaultValue="docs" className="w-full" />
-    </div>
+    </motion.div>
   );
 }
 
