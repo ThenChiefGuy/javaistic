@@ -1,4 +1,3 @@
-import LenisProvider from "@/components/providers/lenis-provider";
 import SearchDialog from "@/components/search";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { RootProvider } from "fumadocs-ui/provider";
@@ -59,7 +58,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             SearchDialog,
           }}
         >
-          <LenisProvider>{children}</LenisProvider>
+          {children}
         </RootProvider>
       </body>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS!} />
