@@ -3,6 +3,7 @@
 import { baseOptions, linkItems } from "@/app/layout.config";
 import { Footer } from "@/components/footer";
 import { GitHubIcon } from "@/components/icons";
+import LenisProvider from "@/components/providers/lenis-provider";
 import { useDarkMode } from "@/hooks/useDarkMode";
 import Link from "fumadocs-core/link";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
@@ -254,7 +255,7 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
           ...linkItems,
         ]}
       >
-        {children}
+        <LenisProvider>{children}</LenisProvider>
       </HomeLayout>
       <Footer />
     </>
