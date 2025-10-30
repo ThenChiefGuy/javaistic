@@ -59,7 +59,7 @@ export default function AboutPage() {
           >
             About{" "}
             <span className="bg-gradient-to-br from-sky-400 via-indigo-500 to-purple-600 bg-clip-text text-transparent">
-              Javaistic
+              HabibiJava
             </span>
           </motion.h1>
 
