@@ -130,7 +130,7 @@ export default function AboutPage() {
               className="text-muted-foreground text-lg leading-relaxed"
               variants={ANIMATION_VARIANTS.item}
             >
-              Javaistic was born from a simple belief: everyone deserves access
+              HabibiJava was born from a simple belief: everyone deserves access
               to high-quality programming education, regardless of background or
               budget. We&apos;re building a comprehensive, free platform that
               makes learning Java intuitive and effective for all skill levels.
@@ -166,7 +166,7 @@ export default function AboutPage() {
 
             <motion.div variants={ANIMATION_VARIANTS.item}>
               <Link
-                href="https://github.com/javaistic/javaistic"
+                href="#"
                 target="_blank"
               >
                 <Button
@@ -193,7 +193,7 @@ export default function AboutPage() {
           >
             <img
               src="/mission.svg"
-              alt="Javaistic Learning Platform - Free Java Programming Education"
+              alt="HabibiJava Learning Platform - Free Java Programming Education"
               className="relative z-10 aspect-square h-80 w-80 rounded-full border-2 border-white/20 bg-white object-cover shadow-2xl transition-transform duration-300 dark:border-neutral-800 dark:bg-neutral-900"
             />
           </motion.div>
