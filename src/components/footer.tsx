@@ -63,14 +63,14 @@ export function Footer() {
                 <DiscordIcon className="h-5 w-5" />
               </Link>
               <Link
-                href="https://x.com/javaistic"
+                href="#"
                 aria-label="X (formerly Twitter)"
                 className="text-muted-foreground hover:text-foreground transition-colors duration-200 ease-in-out"
               >
                 <TwitterIcon className="h-5 w-5" />
               </Link>
               <Link
-                href="https://opencollective.com/javaistic"
+                href="#"
                 aria-label="Open Collective"
                 className="text-muted-foreground transition-colors duration-200 ease-in-out hover:text-[#7FADF2]"
               >
@@ -81,7 +81,7 @@ export function Footer() {
             <div className="flex items-center space-x-1 text-sm text-neutral-500">
               <span>Made by</span>
               <Link
-                href="https://arghya.dev?ref=javaistic"
+                href="#"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-bold text-neutral-800 dark:text-white"
@@ -127,20 +127,20 @@ export function Footer() {
 
           <div>
             <div className="flex items-center space-x-1 text-sm text-neutral-500">
-              <span>Made with</span>
+              <span>Made by</span>
               <span role="img" aria-label="love" className="text-red-500">
-                ❤️
+                TheBlackSpider
               </span>
               <span className="flex items-center gap-x-1.5">
                 in
                 <Image
-                  src="https://flagapi.vercel.app/S/IND"
-                  alt="India"
+                  src="https://flagapi.vercel.app/S/SA"
+                  alt="Saudi-Arabia"
                   width={12}
                   height={12}
                   className="h-3 rounded-xs"
                 />
-                <span className="sr-only">India</span>
+                <span className="sr-only"></span>
                 IND
               </span>
             </div>
