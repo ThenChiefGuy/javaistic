@@ -48,7 +48,7 @@ export default function StorePage() {
         <header className="max-w-xl">
           <div className="p-6 rounded-2xl terminal glass-accent">
             <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white">
-              DonutSMP Store — Coming Soon
+              Coming Soon
             </h1>
             <p className="mt-3 text-sm text-slate-300/80">
               A new digital experience is being crafted. Stay tuned — we’re
