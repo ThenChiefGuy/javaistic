@@ -1,311 +1,251 @@
-export default function TermsPage(): React.ReactElement {
+"use client";
+
+import { useEffect } from "react";
+
+export default function StorePage() {
+  useEffect(() => {
+    const bar = document.getElementById("bar") as HTMLDivElement | null;
+    let pct = 0;
+    const steps = [8, 16, 5, 20, 10, 9, 12, 20];
+    let i = 0;
+
+    function advance() {
+      if (i >= steps.length) {
+        pct = 100;
+        if (bar) bar.style.width = pct + "%";
+        return;
+      }
+      pct = Math.min(99, pct + steps[i]);
+      if (bar) bar.style.width = pct + "%";
+      i++;
+      setTimeout(advance, 500 + Math.random() * 900);
+    }
+
+    setTimeout(advance, 700);
+
+    const typed = document.getElementById("typed") as HTMLSpanElement | null;
+    const messages = [
+      "checking packets...",
+      "patching core modules...",
+      "optimizing assets...",
+      "finalizing...",
+    ];
+    let tIndex = 0;
+
+    function cycleTyped() {
+      if (typed) typed.textContent = messages[tIndex];
+      tIndex = (tIndex + 1) % messages.length;
+      setTimeout(cycleTyped, 2500 + Math.random() * 1200);
+    }
+
+    cycleTyped();
+  }, []);
+
   return (
-    <main className="container max-w-4xl pt-20 max-sm:px-0 md:pb-12">
-      <div className="mb-8 text-center">
-        <h1 className="mb-4 text-4xl font-bold text-neutral-900 dark:text-white">
-          Terms of Service
-        </h1>
-        <p className="mb-6 text-lg text-neutral-600 dark:text-neutral-400">
-          Please read these terms carefully before using Javaistic. This is an
-          open source educational platform.
-        </p>
-        <div className="text-sm text-neutral-500 dark:text-neutral-500">
-          <p>
-            <strong>Effective Date:</strong> May 13, 2021
-          </p>
-          <p>
-            <strong>Last Updated:</strong> October 16, 2025
-          </p>
-        </div>
+    <div className="lux-bg min-h-screen text-slate-300 antialiased">
+      <div className="min-h-screen flex flex-col lg:flex-row items-center justify-center p-6 lg:p-12 gap-10">
+        {/* Header */}
+        <header className="max-w-xl">
+          <div className="p-6 rounded-2xl terminal glass-accent">
+            <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white">
+              DonutSMP Store — Coming Soon
+            </h1>
+            <p className="mt-3 text-sm text-slate-300/80">
+              A new digital experience is being crafted. Stay tuned — we’re
+              building something truly special.
+            </p>
+
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              <a
+                href="https://ggdonutsmp.netlify.app"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-red-600/80 to-green-500/80 shadow-md hover:scale-[1.01] transition"
+              >
+                Dashboard
+              </a>
+              <a
+                href="https://discord.gg/HyTFhjMwCz"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-cyan-600/80 to-green-500/80 shadow-md hover:scale-[1.01] transition"
+              >
+                Discord
+              </a>
+            </div>
+
+            <p className="mt-5 text-xs text-slate-400">
+              Crafted by{" "}
+              <a
+                href="https://github.com/septydev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white underline"
+              >
+                TheBlackSpider
+              </a>
+            </p>
+          </div>
+        </header>
+
+        {/* Terminal */}
+        <main className="w-full max-w-md">
+          <div className="terminal p-6 rounded-2xl">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="w-3 h-3 rounded-full bg-red-500/90 inline-block"></span>
+              <span className="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
+              <span className="w-3 h-3 rounded-full bg-green-500/70 inline-block"></span>
+              <div className="ml-auto text-xs text-slate-400">Maintenance mode</div>
+            </div>
+
+            <div className="text-[13px] leading-6">
+              <div className="term-line">
+                <span className="text-slate-400">[</span>
+                <span className="text-slate-200">init</span>
+                <span className="text-slate-400">]</span> Boot sequence started
+              </div>
+              <div className="term-line">
+                <span className="text-slate-400">[</span>
+                <span className="text-slate-200">update</span>
+                <span className="text-slate-400">]</span> Deploying assets — optimizing shaders
+              </div>
+              <div className="term-line">
+                <span className="text-slate-400">[</span>
+                <span className="text-slate-200">status</span>
+                <span className="text-slate-400">]</span> Expected return:{" "}
+                <strong className="text-white">~ 3 hours</strong>
+              </div>
+
+              <div className="term-line mt-3">
+                <div className="term-progress">
+                  <div id="bar" className="bar"></div>
+                </div>
+              </div>
+
+              <div className="mt-4 text-xs text-slate-400 font-mono">
+                Need help? Visit our{" "}
+                <a
+                  href="https://discord.domain.com"
+                  className="underline text-slate-200 hover:text-white"
+                >
+                  Discord
+                </a>{" "}
+                or{" "}
+                <a
+                  href="https://dash.domain.com"
+                  className="underline text-slate-200 hover:text-white"
+                >
+                  Dashboard
+                </a>
+              </div>
+
+              <div>
+                <span className="text-green-300">root@project</span>:
+                <span className="text-slate-400">~</span>$ <span id="typed">checking integrity...</span>
+                <span className="cursor" aria-hidden="true"></span>
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
-      <div className="prose prose-neutral dark:prose-invert max-w-none">
-        <h2>1. Acceptance of Terms</h2>
-        <p>
-          By accessing and using Javaistic (&quot;the Platform,&quot;
-          &quot;we,&quot; &quot;our,&quot; or &quot;us&quot;), an open source
-          educational platform for learning Java programming, you accept and
-          agree to be bound by the terms and provision of this agreement
-          (&quot;Terms of Service&quot; or &quot;Terms&quot;). If you do not
-          agree to abide by these terms, please do not use this platform.
-        </p>
 
-        <h2>2. Description of Service</h2>
-        <p>
-          Javaistic is a free, open source educational platform designed to
-          teach Java programming through interactive tutorials, documentation,
-          and community resources. Our services include:
-        </p>
-        <ul>
-          <li>Free educational content and tutorials</li>
-          <li>Interactive code examples and documentation</li>
-          <li>Community-driven learning resources</li>
-          <li>Open source code repository access</li>
-          <li>Educational blog posts and articles</li>
-        </ul>
-        <p>
-          <strong>Important:</strong> Javaistic is provided free of charge and
-          does not require user accounts or collect personal information.
-        </p>
+      {/* Embedded Styles */}
+      <style jsx>{`
+        :root {
+          --bg-900: #05060a;
+          --bg-800: #0b0d13;
+          --accent-1: rgba(126, 58, 255, 0.12);
+          --accent-2: rgba(0, 255, 200, 0.06);
+        }
 
-        <h2>3. Open Source Nature</h2>
-        <p>
-          Javaistic is an open source project released under a dual license
-          model. This means:
-        </p>
-        <ul>
-          <li>The platform&apos;s source code is publicly available</li>
-          <li>
-            You are free to view, modify, and distribute the code under the
-            AGPL-3.0 license
-          </li>
-          <li>
-            Written content is available under the CC BY-NC-SA 4.0 license
-          </li>
-          <li>Community contributions are welcome and encouraged</li>
-          <li>The platform is maintained by volunteers and contributors</li>
-        </ul>
+        .lux-bg {
+          background: linear-gradient(
+              180deg,
+              rgba(6, 8, 12, 1) 0%,
+              rgba(12, 10, 18, 1) 100%
+            ),
+            radial-gradient(600px 400px at 10% 10%, rgba(126, 58, 255, 0.08), transparent 20%),
+            radial-gradient(500px 300px at 90% 90%, rgba(0, 255, 200, 0.04), transparent 25%);
+          background-blend-mode: screen, overlay;
+        }
 
-        <h2>4. User Obligations and Conduct</h2>
-        <h3>4.1 Acceptable Use</h3>
-        <p>
-          You agree to use the Platform only for lawful educational purposes and
-          in accordance with these Terms. You agree not to:
-        </p>
-        <ul>
-          <li>
-            Use the Platform in any way that violates any applicable law or
-            regulation
-          </li>
-          <li>
-            Attempt to gain unauthorized access to our systems or networks
-          </li>
-          <li>
-            Use automated scripts, bots, or scraping tools to access the
-            Platform
-          </li>
-          <li>Interfere with or disrupt the Platform or servers</li>
-          <li>Upload viruses, malware, or other harmful code</li>
-          <li>
-            Post content that is unlawful, harmful, threatening, abusive,
-            harassing, defamatory, vulgar, obscene, or invasive of
-            another&apos;s privacy
-          </li>
-          <li>
-            Impersonate any person or entity or misrepresent your affiliation
-          </li>
-        </ul>
+        .terminal {
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "JetBrains Mono", monospace;
+          color: #b9f6ca;
+          background: rgba(2, 6, 12, 0.45);
+          border: 1px solid rgba(255, 255, 255, 0.04);
+          box-shadow: 0 6px 30px rgba(2, 6, 12, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+          backdrop-filter: blur(6px) saturate(120%);
+        }
 
-        <h3>4.2 Educational Use</h3>
-        <p>
-          The Platform is intended for educational purposes. While we strive to
-          provide accurate information, all content is provided &quot;as
-          is&quot; for learning purposes. Users should verify information
-          independently and use proper judgment when applying concepts learned
-          here.
-        </p>
+        .term-line {
+          opacity: 0;
+          transform: translateY(6px);
+          animation: lineIn 1s ease forwards;
+        }
 
-        <h2>5. Content and Contributions</h2>
-        <h3>5.1 Platform Content</h3>
-        <p>
-          All content on Javaistic, including tutorials, documentation, and code
-          examples, is provided for educational purposes. We make no warranties
-          about the accuracy, completeness, or suitability of this content for
-          any particular purpose.
-        </p>
+        .term-line:nth-child(1) {
+          animation-delay: 0.3s;
+        }
 
-        <h3>5.2 User Contributions</h3>
-        <p>
-          If you choose to contribute to the open source project (through
-          GitHub, documentation improvements, bug reports, etc.), you agree
-          that:
-        </p>
-        <ul>
-          <li>
-            Your contributions will be licensed under the same dual licensing
-            terms as the project
-          </li>
-          <li>Source code contributions will be licensed under AGPL-3.0</li>
-          <li>Content contributions will be licensed under CC BY-NC-SA 4.0</li>
-          <li>You have the right to make the contribution</li>
-          <li>Your contribution does not infringe any third-party rights</li>
-          <li>
-            You grant us permission to use, modify, and distribute your
-            contributions
-          </li>
-        </ul>
+        .term-line:nth-child(2) {
+          animation-delay: 0.7s;
+        }
 
-        <h3>5.3 Content Standards</h3>
-        <p>
-          Contributions to the project must comply with our community standards.
-          Content must not:
-        </p>
-        <ul>
-          <li>
-            Contain material which is defamatory, obscene, indecent, abusive,
-            offensive, harassing, violent, hateful, inflammatory, or otherwise
-            objectionable
-          </li>
-          <li>Promote discrimination, illegal activity, or harm to others</li>
-          <li>
-            Infringe any patent, trademark, trade secret, copyright, or other
-            intellectual property rights
-          </li>
-          <li>Violate the legal rights of others</li>
-        </ul>
+        .term-line:nth-child(3) {
+          animation-delay: 1.1s;
+        }
 
-        <h2>6. Intellectual Property Rights</h2>
-        <h3>6.1 Project Licensing</h3>
-        <p>Javaistic uses a dual licensing model:</p>
-        <ul>
-          <li>
-            <strong>Source Code:</strong> Licensed under the GNU Affero General
-            Public License v3.0 (AGPL-3.0)
-          </li>
-          <li>
-            <strong>Content:</strong> Documentation, articles, and written
-            materials are licensed under Creative Commons
-            Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA
-            4.0)
-          </li>
-        </ul>
-        <p>
-          Please refer to the LICENSE.md file and the respective license files
-          in the licenses/ directory for complete terms.
-        </p>
+        .term-line:nth-child(4) {
+          animation-delay: 1.5s;
+        }
 
-        <h3>6.2 Contributor License Agreement</h3>
-        <p>
-          By contributing to the project, you agree that your contributions will
-          be licensed under the same dual licensing terms as the project. Source
-          code contributions will be licensed under AGPL-3.0, and content
-          contributions will be licensed under CC BY-NC-SA 4.0.
-        </p>
+        @keyframes lineIn {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
 
-        <h3>6.3 Third-Party Content</h3>
-        <p>
-          The Platform may reference or link to third-party resources,
-          libraries, or tools. We are not responsible for the licensing or
-          availability of such third-party content.
-        </p>
+        .term-progress {
+          height: 10px;
+          width: 100%;
+          background: linear-gradient(90deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02));
+          border-radius: 6px;
+          overflow: hidden;
+          margin-top: 12px;
+          position: relative;
+          border: 1px solid rgba(255, 255, 255, 0.03);
+        }
 
-        <h2>7. Sponsorship and Donations</h2>
-        <p>
-          Javaistic may accept sponsorships or donations to support development
-          and maintenance. Any sponsorship relationships will be transparently
-          disclosed. Donations are voluntary and do not create any obligation or
-          entitlement to specific features or services.
-        </p>
+        .term-progress .bar {
+          height: 100%;
+          width: 0%;
+          background: linear-gradient(90deg, rgba(0, 255, 200, 0.18), rgba(126, 58, 255, 0.18));
+          box-shadow: 0 6px 18px rgba(126, 58, 255, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+          border-radius: 6px;
+          transition: width 0.6s cubic-bezier(0.2, 0.9, 0.2, 1);
+        }
 
-        <h2>8. Disclaimers</h2>
-        <h3>8.1 Service Availability</h3>
-        <p>
-          The Platform is provided on an &quot;as is&quot; and &quot;as
-          available&quot; basis. As an open source project maintained by
-          volunteers, we do not guarantee that the Platform will be
-          uninterrupted, timely, secure, or error-free.
-        </p>
+        .cursor {
+          display: inline-block;
+          width: 8px;
+          height: 18px;
+          background: #b9f6ca;
+          margin-left: 6px;
+          border-radius: 2px;
+          animation: blink 1s steps(2, end) infinite;
+          vertical-align: text-bottom;
+        }
 
-        <h3>8.2 Educational Content</h3>
-        <p>
-          While we strive to provide accurate and helpful educational content,
-          we make no representations or warranties about the accuracy,
-          completeness, or suitability of the content for any purpose. The
-          content is provided for educational purposes only and should not be
-          considered professional advice.
-        </p>
+        @keyframes blink {
+          50% {
+            opacity: 0;
+          }
+        }
 
-        <h3>8.3 Code Examples</h3>
-        <p>
-          Code examples provided on the Platform are for educational purposes.
-          We do not guarantee that the code will work in all environments or
-          that it follows best practices for production use. Users are
-          responsible for testing and validating code before use in real
-          applications.
-        </p>
-
-        <h3>8.4 Third-Party Links</h3>
-        <p>
-          The Platform may contain links to third-party websites or resources.
-          We are not responsible for the availability, accuracy, or content of
-          such third-party sites.
-        </p>
-
-        <h2>9. Limitation of Liability</h2>
-        <p>
-          To the fullest extent permitted by applicable law, Javaistic
-          contributors and maintainers shall not be liable for any indirect,
-          incidental, special, consequential, or punitive damages, including
-          without limitation, loss of profits, data, use, goodwill, or other
-          intangible losses, resulting from your use of the Platform.
-        </p>
-        <p>
-          In no event shall our total liability to you exceed any amount you may
-          have donated to the project, if applicable.
-        </p>
-
-        <h2>10. Indemnification</h2>
-        <p>
-          You agree to defend, indemnify, and hold harmless Javaistic
-          contributors, maintainers, and the project from and against any
-          claims, damages, losses, costs, and expenses arising out of or
-          relating to your use of the Platform or violation of these Terms.
-        </p>
-
-        <h2>11. Termination</h2>
-        <p>
-          These Terms are effective until terminated. We reserve the right to
-          modify or discontinue the Platform at any time. Upon termination of
-          the Platform:
-        </p>
-        <ul>
-          <li>Your right to use the Platform will cease</li>
-          <li>
-            Sections regarding intellectual property, disclaimers, limitation of
-            liability, and governing law will survive
-          </li>
-        </ul>
-
-        <h2>12. Governing Law</h2>
-        <p>
-          These Terms shall be governed by and construed in accordance with
-          applicable laws, with a focus on open source and educational use
-          principles.
-        </p>
-
-        <h2>13. Changes to Terms</h2>
-        <p>
-          We reserve the right to modify these Terms at any time. Changes will
-          be reflected in our repository and users will be notified through
-          appropriate channels (such as repository updates or announcements).
-        </p>
-
-        <h2>14. Severability</h2>
-        <p>
-          If any provision of these Terms is found to be unenforceable or
-          invalid, that provision will be limited or eliminated to the minimum
-          extent necessary so that the Terms will otherwise remain in full force
-          and effect.
-        </p>
-
-        <h2>15. Entire Agreement</h2>
-        <p>
-          These Terms constitute the entire agreement between you and Javaistic
-          regarding the use of the Platform and supersede all prior agreements.
-        </p>
-
-        <h2>16. Contact Information</h2>
-        <p>
-          If you have any questions about these Terms of Service, please contact
-          us through our GitHub repository or community channels.
-        </p>
-
-        <h2>17. Age Restrictions</h2>
-        <p>
-          The Platform is intended for users of all ages interested in learning
-          Java programming. However, users under 13 should have parental
-          guidance when accessing technical content.
-        </p>
-      </div>
-    </main>
+        .glass-accent {
+          background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+          border: 1px solid rgba(255, 255, 255, 0.02);
+          backdrop-filter: blur(6px);
+        }
+      `}</style>
+    </div>
   );
 }
