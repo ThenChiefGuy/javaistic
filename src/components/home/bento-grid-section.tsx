@@ -48,7 +48,7 @@ export function BentoGridSection() {
               Built with Passion.
             </motion.h2>
             <motion.p className="text-muted-foreground group-hover:text-foreground/80 group-active:text-foreground/80 text-base leading-relaxed transition-colors duration-300 select-none">
-              Javaistic is built with the love and dedication of our community.
+              HabibiJava is built with the love and dedication of our community.
               We are committed to providing the best possible learning
               experience for our users.
             </motion.p>
