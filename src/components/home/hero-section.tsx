@@ -20,7 +20,7 @@ export function HeroSection() {
         className="font-funnel-display text-foreground max-w-5xl text-5xl font-bold tracking-tighter sm:text-7xl"
         variants={ANIMATION_VARIANTS.title}
       >
-        Master Java Programming efficiently with Javaistic
+        Master Java Programming efficiently with HabibiJava
       </motion.h1>
       <motion.p
         className="mt-6 max-w-3xl text-lg font-medium text-neutral-700 sm:text-xl dark:text-neutral-300"
@@ -48,7 +48,7 @@ export function HeroSection() {
           </Button>
         </motion.a>
         <motion.a
-          href="https://github.com/javaistic/javaistic"
+          href="#"
           target="_blank"
           rel="noopener noreferrer"
           variants={ANIMATION_VARIANTS.title}
@@ -57,7 +57,7 @@ export function HeroSection() {
             size="lg"
             variant="outline"
             className="dark:text-foreground border-blue cursor-pointer rounded-lg py-6 text-lg font-semibold"
-            aria-label="View Javaistic project on GitHub"
+            aria-label="View HabibiJava project on GitHub"
           >
             <GitHubIcon className="!size-5" aria-hidden="true" />
             Star on GitHub
