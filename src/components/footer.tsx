@@ -86,7 +86,7 @@ export function Footer() {
                 rel="noopener noreferrer"
                 className="font-bold text-neutral-800 dark:text-white"
               >
-                @uiuxarghya
+                @theblackspider
               </Link>
             </div>
           </div>
@@ -121,7 +121,7 @@ export function Footer() {
             All systems operational
           </h5>
           <h5>
-            &copy; 2021 - {new Date().getFullYear()} Javaistic. All rights
+            &copy; 2025 - {new Date().getFullYear()} HabibiJava. All rights
             reserved.
           </h5>
 
@@ -141,7 +141,7 @@ export function Footer() {
                   className="h-3 rounded-xs"
                 />
                 <span className="sr-only"></span>
-                IND
+                SA
               </span>
             </div>
           </div>
