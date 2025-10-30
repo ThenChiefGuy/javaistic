@@ -31,14 +31,14 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://javaistic.vercel.app"),
-  title: "Javaistic - Learn Java for Free",
+  metadataBase: new URL("https://habibi-java.vercel.app"),
+  title: "HabibiJava - Learn Java for Free",
   description:
-    "Javaistic is a free platform to learn Java programming language with interactive tutorials and resources.",
+    "HabibiJava is a free platform to learn Java programming language with interactive tutorials and resources.",
   openGraph: {
     images: "https://javaistic.vercel.app/og.png",
-    siteName: "Javaistic",
-    url: "https://javaistic.vercel.app",
+    siteName: "HabibiJava",
+    url: "https://habibi-java.vercel.app",
   },
   twitter: {
     card: "summary_large_image",
