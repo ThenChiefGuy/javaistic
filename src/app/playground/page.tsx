@@ -1,300 +1,251 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { baseOptions } from "@/app/layout.config";
-import { Footer } from "@/components/footer";
-import { HomeLayout } from "fumadocs-ui/layouts/home";
-import { JSX } from "react/jsx-runtime";
+import { useEffect } from "react";
 
-export default function PlayGround(): JSX.Element {
-  const DEFAULT_CODE = `public class Main {\n    public static void main(String[] args) {\n        // Write your code here\n    }\n}`;
-
-  const [code, setCode] = useState<string>(() => {
-    try {
-      if (typeof window === "undefined") return DEFAULT_CODE;
-      return localStorage.getItem("javaistic_code") || DEFAULT_CODE;
-    } catch {
-      return DEFAULT_CODE;
-    }
-  });
-
-  const [output, setOutput] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
-  const [toast, setToast] = useState<string>("");
-  const [examplesOpen, setExamplesOpen] = useState<boolean>(false);
-
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const lineRef = useRef<HTMLPreElement>(null);
-
+export default function StorePage() {
   useEffect(() => {
-    try {
-      if (typeof window !== "undefined") {
-        localStorage.setItem("javaistic_code", code);
+    const bar = document.getElementById("bar") as HTMLDivElement | null;
+    let pct = 0;
+    const steps = [8, 16, 5, 20, 10, 9, 12, 20];
+    let i = 0;
+
+    function advance() {
+      if (i >= steps.length) {
+        pct = 100;
+        if (bar) bar.style.width = pct + "%";
+        return;
       }
-    } catch {}
-  }, [code]);
-
-  const showToast = (msg: string, ms = 1800): void => {
-    setToast(msg);
-    window.setTimeout(() => setToast(""), ms);
-  };
-
-  const runCode = async (): Promise<void> => {
-    setLoading(true);
-    setOutput("");
-    try {
-      const res = await fetch("/api/playground", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code }),
-      });
-
-      if (!res.ok) {
-        const text = await res.text();
-        setOutput(`Error: ${res.status} ${text}`);
-      } else {
-        const data = await res.json();
-        setOutput(
-          (data && data.run && (data.run.output as string)) || "No output",
-        );
-      }
-    } catch {
-      setOutput("Error executing code");
-    } finally {
-      setLoading(false);
+      pct = Math.min(99, pct + steps[i]);
+      if (bar) bar.style.width = pct + "%";
+      i++;
+      setTimeout(advance, 500 + Math.random() * 900);
     }
-  };
 
-  const clearCode = (): void => {
-    setCode(DEFAULT_CODE);
-    showToast("Reset to default template");
-  };
+    setTimeout(advance, 700);
 
-  const copyCode = async (): Promise<void> => {
-    try {
-      await navigator.clipboard.writeText(code);
-      showToast("Code copied to clipboard");
-    } catch {
-      showToast("Unable to copy");
+    const typed = document.getElementById("typed") as HTMLSpanElement | null;
+    const messages = [
+      "checking packets...",
+      "patching core modules...",
+      "optimizing assets...",
+      "finalizing...",
+    ];
+    let tIndex = 0;
+
+    function cycleTyped() {
+      if (typed) typed.textContent = messages[tIndex];
+      tIndex = (tIndex + 1) % messages.length;
+      setTimeout(cycleTyped, 2500 + Math.random() * 1200);
     }
-  };
 
-  const downloadCode = (): void => {
-    const blob = new Blob([code], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "Main.java";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-    showToast("Downloaded Main.java");
-  };
-
-  const EXAMPLES: Record<string, string> = {
-    "Hello World": `public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello,Welcome to Javaistic PlayGround");
-    }
-}`,
-    "For Loop": `public class Main {
-    public static void main(String[] args) {
-        for (int i = 1; i <= 5; i++) {
-            System.out.println("Count: " + i);
-        }
-    }
-}`,
-    "Sum of Two nums": `public class Main {
-    public static void main(String[] args) {
-        int a = 10;
-        int b = 5;
-        System.out.println("Sum = " + (a + b));
-    }
-}`,
-    "Prime Number Check": `public class Main {
-    public static void main(String[] args) {
-        int num = 17;
-        boolean isPrime = num > 1;
-        for (int i = 2; i <= Math.sqrt(num); i++) {
-            if (num % i == 0) {
-                isPrime = false;
-                break;
-            }
-        }
-        System.out.println(num + (isPrime ? " is Prime" : " is Not Prime"));
-    }
-}`,
-    "Odd Even Check": `public class Main {
-    public static void main(String[] args) {
-        int num = 24;
-        System.out.println(num + (num % 2 == 0 ? " is Even" : " is Odd"));
-    }
-}`,
-  };
-
-  const loadExample = (key: string): void => {
-    setCode(EXAMPLES[key]);
-    setExamplesOpen(false);
-    showToast(`${key} loaded`);
-  };
-
-  const clearOutput = (): void => setOutput("");
-
-  const getLineNumbers = (text: string): string =>
-    Array.from(
-      { length: Math.max(1, text.split("\n").length) },
-      (_, i) => i + 1,
-    ).join("\n");
-
-  useEffect(() => {
-    const t = textareaRef.current;
-    const l = lineRef.current;
-    if (!t || !l) return;
-    const sync = () => {
-      l.scrollTop = t.scrollTop;
-    };
-    t.addEventListener("scroll", sync);
-    return () => t.removeEventListener("scroll", sync);
+    cycleTyped();
   }, []);
 
   return (
-    <>
-      <HomeLayout
-        {...baseOptions}
-        style={{ "--spacing-fd-container": "1280px" } as React.CSSProperties}
-      >
-        <div className="mb-5 space-y-6">
-          <h1 className="font-funnel-display mb- mx-auto -mt-10 max-w-3xl text-center text-4xl font-extrabold tracking-tight text-neutral-900 sm:text-6xl lg:text-[80px] dark:text-white">
-            Javaistic{" "}
-            <span className="bg-gradient-to-br from-sky-400 to-indigo-500 bg-clip-text text-transparent">
-              Playground
-            </span>
-          </h1>
+    <div className="lux-bg min-h-screen text-slate-300 antialiased">
+      <div className="min-h-screen flex flex-col lg:flex-row items-center justify-center p-6 lg:p-12 gap-10">
+        {/* Header */}
+        <header className="max-w-xl">
+          <div className="p-6 rounded-2xl terminal glass-accent">
+            <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white">
+              Coming Soon
+            </h1>
+            <p className="mt-3 text-sm text-slate-300/80">
+              A new digital experience is being crafted. Stay tuned — we’re
+              building something truly special.
+            </p>
 
-          <div className="m-auto flex flex-col gap-6 px-4 lg:flex-row">
-            <div className="min-h-[70vh] flex-1 rounded-xl border bg-black p-3 shadow-lg dark:bg-gray-800">
-              <div className="mb-4 flex flex-wrap items-center justify-between gap-1">
-                <span className="font-mono text-sm text-white">Main.java</span>
-                <div className="flex flex-wrap gap-1">
-                  <button
-                    onClick={runCode}
-                    className="cursor-pointer rounded-md bg-green-400 px-3 py-1 text-sm text-white shadow hover:bg-green-500"
-                  >
-                    {loading ? "▶️....." : "▶️ Run"}
-                  </button>
-
-                  <button
-                    onClick={clearCode}
-                    className="cursor-pointer rounded-md bg-gray-200 px-3 py-1 text-sm text-black shadow hover:bg-gray-300 dark:bg-gray-500 dark:text-white dark:hover:bg-gray-400"
-                  >
-                    🔄 Clear
-                  </button>
-
-                  <button
-                    onClick={copyCode}
-                    className="cursor-pointer rounded-md bg-blue-300 px-3 py-1 text-sm text-white shadow hover:bg-blue-400"
-                  >
-                    📋 Copy
-                  </button>
-
-                  <button
-                    onClick={downloadCode}
-                    className="cursor-pointer rounded-md bg-yellow-300 px-3 py-1 text-sm text-black shadow hover:bg-yellow-400"
-                  >
-                    📥 Download
-                  </button>
-
-                  <div className="relative">
-                    <button
-                      onClick={() => setExamplesOpen((s) => !s)}
-                      className="cursor-pointer rounded-md bg-purple-400 px-3 py-1 text-sm text-white shadow hover:bg-purple-500"
-                    >
-                      Examples ▾
-                    </button>
-                    {examplesOpen && (
-                      <ul className="absolute z-10 mt-2 w-56 rounded-md border bg-white p-2 shadow dark:bg-gray-700">
-                        {Object.keys(EXAMPLES).map((key) => (
-                          <li key={key}>
-                            <button
-                              onClick={() => loadExample(key)}
-                              className="w-full rounded px-2 py-1 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-600"
-                            >
-                              {key}
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
-
-                <button
-                  onClick={clearOutput}
-                  className="cursor-pointer rounded-md bg-red-400 px-3 py-1 text-sm text-white shadow hover:bg-red-500"
-                >
-                  🔄 Clear Output
-                </button>
-              </div>
-
-              <div className="relative m-2 flex h-[60vh] overflow-hidden rounded border">
-                <pre
-                  ref={lineRef as React.RefObject<HTMLPreElement>}
-                  className="overflow-hidden px-3 py-3 text-right text-sm text-white select-none"
-                  style={{ width: 50 }}
-                >
-                  {getLineNumbers(code)}
-                </pre>
-
-                <textarea
-                  ref={textareaRef}
-                  value={code}
-                  onChange={(e) => setCode(e.target.value)}
-                  spellCheck={false}
-                  className="h-full flex-1 resize-none overflow-auto bg-gray-800/90 p-3 font-mono text-sm text-orange-400 outline-none dark:bg-[#0c1116] dark:text-[#ffaa00]"
-                />
-              </div>
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              <a
+                href="https://ggdonutsmp.netlify.app"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-red-600/80 to-green-500/80 shadow-md hover:scale-[1.01] transition"
+              >
+                Dashboard
+              </a>
+              <a
+                href="https://discord.gg/HyTFhjMwCz"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-cyan-600/80 to-green-500/80 shadow-md hover:scale-[1.01] transition"
+              >
+                Discord
+              </a>
             </div>
 
-            <div className="m-2 flex min-h-[70vh] flex-1 flex-col rounded-xl border bg-gray-900 p-3 shadow-lg dark:bg-gray-900">
-              <div className="mb-2 flex items-center justify-between">
-                <span className="text-sm text-white dark:text-gray-500">
-                  Output
-                </span>
+            <p className="mt-5 text-xs text-slate-400">
+              Crafted by{" "}
+              <a
+                href="https://github.com/septydev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white underline"
+              >
+                TheBlackSpider
+              </a>
+            </p>
+          </div>
+        </header>
+
+        {/* Terminal */}
+        <main className="w-full max-w-md">
+          <div className="terminal p-6 rounded-2xl">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="w-3 h-3 rounded-full bg-red-500/90 inline-block"></span>
+              <span className="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
+              <span className="w-3 h-3 rounded-full bg-green-500/70 inline-block"></span>
+              <div className="ml-auto text-xs text-slate-400">Maintenance mode</div>
+            </div>
+
+            <div className="text-[13px] leading-6">
+              <div className="term-line">
+                <span className="text-slate-400">[</span>
+                <span className="text-slate-200">init</span>
+                <span className="text-slate-400">]</span> Boot sequence started
               </div>
-              <pre className="h-[60vh] flex-1 overflow-y-auto rounded bg-fuchsia-50 p-3 text-lg whitespace-pre-wrap text-red-500 dark:bg-blue-300/10 dark:text-green-300">
-                {output || "Program output will appear here..."}
-              </pre>
+              <div className="term-line">
+                <span className="text-slate-400">[</span>
+                <span className="text-slate-200">update</span>
+                <span className="text-slate-400">]</span> Deploying assets — optimizing shaders
+              </div>
+              <div className="term-line">
+                <span className="text-slate-400">[</span>
+                <span className="text-slate-200">status</span>
+                <span className="text-slate-400">]</span> Expected return:{" "}
+                <strong className="text-white">~ 3 hours</strong>
+              </div>
+
+              <div className="term-line mt-3">
+                <div className="term-progress">
+                  <div id="bar" className="bar"></div>
+                </div>
+              </div>
+
+              <div className="mt-4 text-xs text-slate-400 font-mono">
+                Need help? Visit our{" "}
+                <a
+                  href="https://discord.domain.com"
+                  className="underline text-slate-200 hover:text-white"
+                >
+                  Discord
+                </a>{" "}
+                or{" "}
+                <a
+                  href="https://dash.domain.com"
+                  className="underline text-slate-200 hover:text-white"
+                >
+                  Dashboard
+                </a>
+              </div>
+
+              <div>
+                <span className="text-green-300">root@project</span>:
+                <span className="text-slate-400">~</span>$ <span id="typed">checking integrity...</span>
+                <span className="cursor" aria-hidden="true"></span>
+              </div>
             </div>
           </div>
+        </main>
+      </div>
 
-          {toast && (
-            <div className="fixed right-6 bottom-6 rounded-md bg-black/80 px-4 py-2 text-white shadow">
-              {toast}
-            </div>
-          )}
-        </div>
-      </HomeLayout>
-      <Footer />
+      {/* Embedded Styles */}
+      <style jsx>{`
+        :root {
+          --bg-900: #05060a;
+          --bg-800: #0b0d13;
+          --accent-1: rgba(126, 58, 255, 0.12);
+          --accent-2: rgba(0, 255, 200, 0.06);
+        }
 
-      <style>
-        {`
-          :root {
-            --editor-bg: #cde7ff;
-            --editor-text: #002b5c;
-            --line-bg: #b9dbff;
-            --line-text: #555;
+        .lux-bg {
+          background: linear-gradient(
+              180deg,
+              rgba(6, 8, 12, 1) 0%,
+              rgba(12, 10, 18, 1) 100%
+            ),
+            radial-gradient(600px 400px at 10% 10%, rgba(126, 58, 255, 0.08), transparent 20%),
+            radial-gradient(500px 300px at 90% 90%, rgba(0, 255, 200, 0.04), transparent 25%);
+          background-blend-mode: screen, overlay;
+        }
+
+        .terminal {
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "JetBrains Mono", monospace;
+          color: #b9f6ca;
+          background: rgba(2, 6, 12, 0.45);
+          border: 1px solid rgba(255, 255, 255, 0.04);
+          box-shadow: 0 6px 30px rgba(2, 6, 12, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+          backdrop-filter: blur(6px) saturate(120%);
+        }
+
+        .term-line {
+          opacity: 0;
+          transform: translateY(6px);
+          animation: lineIn 1s ease forwards;
+        }
+
+        .term-line:nth-child(1) {
+          animation-delay: 0.3s;
+        }
+
+        .term-line:nth-child(2) {
+          animation-delay: 0.7s;
+        }
+
+        .term-line:nth-child(3) {
+          animation-delay: 1.1s;
+        }
+
+        .term-line:nth-child(4) {
+          animation-delay: 1.5s;
+        }
+
+        @keyframes lineIn {
+          to {
+            opacity: 1;
+            transform: translateY(0);
           }
-          @media (prefers-color-scheme: dark) {
-            :root {
-              --editor-bg: #00264d;
-              --editor-text: #b3d9ff;
-              --line-bg: #001933;
-              --line-text: #8899aa;
-            }
+        }
+
+        .term-progress {
+          height: 10px;
+          width: 100%;
+          background: linear-gradient(90deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02));
+          border-radius: 6px;
+          overflow: hidden;
+          margin-top: 12px;
+          position: relative;
+          border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .term-progress .bar {
+          height: 100%;
+          width: 0%;
+          background: linear-gradient(90deg, rgba(0, 255, 200, 0.18), rgba(126, 58, 255, 0.18));
+          box-shadow: 0 6px 18px rgba(126, 58, 255, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+          border-radius: 6px;
+          transition: width 0.6s cubic-bezier(0.2, 0.9, 0.2, 1);
+        }
+
+        .cursor {
+          display: inline-block;
+          width: 8px;
+          height: 18px;
+          background: #b9f6ca;
+          margin-left: 6px;
+          border-radius: 2px;
+          animation: blink 1s steps(2, end) infinite;
+          vertical-align: text-bottom;
+        }
+
+        @keyframes blink {
+          50% {
+            opacity: 0;
           }
-        `}
-      </style>
-    </>
+        }
+
+        .glass-accent {
+          background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+          border: 1px solid rgba(255, 255, 255, 0.02);
+          backdrop-filter: blur(6px);
+        }
+      `}</style>
+    </div>
   );
 }
