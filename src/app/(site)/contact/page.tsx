@@ -414,8 +414,8 @@ export default function ContactUsPage() {
                   <ContactInfoItem
                     icon={GitHubIcon}
                     title="GitHub"
-                    description="github.com/javaistic"
-                    href="https://github.com/javaistic/javaistic"
+                    description="#"
+                    href="#"
                   />
                   <ContactInfoItem
                     icon={MessageSquare}
@@ -448,7 +448,7 @@ export default function ContactUsPage() {
               <div className="flex flex-col justify-center gap-4 sm:flex-row">
                 <Button asChild>
                   <a
-                    href="https://github.com/javaistic/javaistic"
+                    href="#"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
