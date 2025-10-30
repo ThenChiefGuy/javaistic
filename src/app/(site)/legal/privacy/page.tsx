@@ -1,217 +1,251 @@
-export default function PrivacyPolicyPage(): React.ReactElement {
+"use client";
+
+import { useEffect } from "react";
+
+export default function StorePage() {
+  useEffect(() => {
+    const bar = document.getElementById("bar") as HTMLDivElement | null;
+    let pct = 0;
+    const steps = [8, 16, 5, 20, 10, 9, 12, 20];
+    let i = 0;
+
+    function advance() {
+      if (i >= steps.length) {
+        pct = 100;
+        if (bar) bar.style.width = pct + "%";
+        return;
+      }
+      pct = Math.min(99, pct + steps[i]);
+      if (bar) bar.style.width = pct + "%";
+      i++;
+      setTimeout(advance, 500 + Math.random() * 900);
+    }
+
+    setTimeout(advance, 700);
+
+    const typed = document.getElementById("typed") as HTMLSpanElement | null;
+    const messages = [
+      "checking packets...",
+      "patching core modules...",
+      "optimizing assets...",
+      "finalizing...",
+    ];
+    let tIndex = 0;
+
+    function cycleTyped() {
+      if (typed) typed.textContent = messages[tIndex];
+      tIndex = (tIndex + 1) % messages.length;
+      setTimeout(cycleTyped, 2500 + Math.random() * 1200);
+    }
+
+    cycleTyped();
+  }, []);
+
   return (
-    <main className="container max-w-4xl pt-20 max-sm:px-0 md:pb-12">
-      <div className="mb-8 text-center">
-        <h1 className="mb-4 text-4xl font-bold text-neutral-900 dark:text-white">
-          Privacy Policy
-        </h1>
-        <p className="mb-6 text-lg text-neutral-600 dark:text-neutral-400">
-          Your privacy is important to us. This policy explains how we handle
-          information on our open source platform.
-        </p>
-        <div className="text-sm text-neutral-500 dark:text-neutral-500">
-          <p>
-            <strong>Effective Date:</strong> May 13, 2021
-          </p>
-          <p>
-            <strong>Last Updated:</strong> October 16, 2025
-          </p>
-        </div>
+    <div className="lux-bg min-h-screen text-slate-300 antialiased">
+      <div className="min-h-screen flex flex-col lg:flex-row items-center justify-center p-6 lg:p-12 gap-10">
+        {/* Header */}
+        <header className="max-w-xl">
+          <div className="p-6 rounded-2xl terminal glass-accent">
+            <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white">
+              DonutSMP Store — Coming Soon
+            </h1>
+            <p className="mt-3 text-sm text-slate-300/80">
+              A new digital experience is being crafted. Stay tuned — we’re
+              building something truly special.
+            </p>
+
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              <a
+                href="https://ggdonutsmp.netlify.app"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-red-600/80 to-green-500/80 shadow-md hover:scale-[1.01] transition"
+              >
+                Dashboard
+              </a>
+              <a
+                href="https://discord.gg/HyTFhjMwCz"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-cyan-600/80 to-green-500/80 shadow-md hover:scale-[1.01] transition"
+              >
+                Discord
+              </a>
+            </div>
+
+            <p className="mt-5 text-xs text-slate-400">
+              Crafted by{" "}
+              <a
+                href="https://github.com/septydev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white underline"
+              >
+                TheBlackSpider
+              </a>
+            </p>
+          </div>
+        </header>
+
+        {/* Terminal */}
+        <main className="w-full max-w-md">
+          <div className="terminal p-6 rounded-2xl">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="w-3 h-3 rounded-full bg-red-500/90 inline-block"></span>
+              <span className="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
+              <span className="w-3 h-3 rounded-full bg-green-500/70 inline-block"></span>
+              <div className="ml-auto text-xs text-slate-400">Maintenance mode</div>
+            </div>
+
+            <div className="text-[13px] leading-6">
+              <div className="term-line">
+                <span className="text-slate-400">[</span>
+                <span className="text-slate-200">init</span>
+                <span className="text-slate-400">]</span> Boot sequence started
+              </div>
+              <div className="term-line">
+                <span className="text-slate-400">[</span>
+                <span className="text-slate-200">update</span>
+                <span className="text-slate-400">]</span> Deploying assets — optimizing shaders
+              </div>
+              <div className="term-line">
+                <span className="text-slate-400">[</span>
+                <span className="text-slate-200">status</span>
+                <span className="text-slate-400">]</span> Expected return:{" "}
+                <strong className="text-white">~ 3 hours</strong>
+              </div>
+
+              <div className="term-line mt-3">
+                <div className="term-progress">
+                  <div id="bar" className="bar"></div>
+                </div>
+              </div>
+
+              <div className="mt-4 text-xs text-slate-400 font-mono">
+                Need help? Visit our{" "}
+                <a
+                  href="https://discord.domain.com"
+                  className="underline text-slate-200 hover:text-white"
+                >
+                  Discord
+                </a>{" "}
+                or{" "}
+                <a
+                  href="https://dash.domain.com"
+                  className="underline text-slate-200 hover:text-white"
+                >
+                  Dashboard
+                </a>
+              </div>
+
+              <div>
+                <span className="text-green-300">root@project</span>:
+                <span className="text-slate-400">~</span>$ <span id="typed">checking integrity...</span>
+                <span className="cursor" aria-hidden="true"></span>
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
-      <div className="prose prose-neutral dark:prose-invert max-w-none">
-        <h2>1. Introduction</h2>
-        <p>
-          Welcome to Javaistic (&quot;we,&quot; &quot;our,&quot; or
-          &quot;us&quot;). We are committed to protecting your privacy and
-          ensuring transparency. This Privacy Policy explains our practices
-          regarding information handling on our open source educational platform
-          for learning Java programming.
-        </p>
-        <p>
-          <strong>Important:</strong> Javaistic does not require user accounts
-          and does not collect personal information from visitors.
-        </p>
 
-        <h2>2. Information We Do Not Collect</h2>
-        <p>
-          Unlike many web platforms, Javaistic is designed as a static
-          educational resource that does not collect personal information. We do
-          not:
-        </p>
-        <ul>
-          <li>Require user registration or accounts</li>
-          <li>Collect names, email addresses, or contact information</li>
-          <li>Track individual users or their behavior</li>
-          <li>Store personal data in databases</li>
-          <li>Use cookies for tracking or analytics</li>
-          <li>Require payment information or billing details</li>
-        </ul>
+      {/* Embedded Styles */}
+      <style jsx>{`
+        :root {
+          --bg-900: #05060a;
+          --bg-800: #0b0d13;
+          --accent-1: rgba(126, 58, 255, 0.12);
+          --accent-2: rgba(0, 255, 200, 0.06);
+        }
 
-        <h2>3. Information We May Collect Automatically</h2>
-        <h3>3.1 Server Logs</h3>
-        <p>
-          Like most websites, our web server may automatically log basic
-          technical information when you visit the site, including:
-        </p>
-        <ul>
-          <li>IP addresses (temporarily, for security purposes)</li>
-          <li>Browser type and version</li>
-          <li>Pages visited and time spent</li>
-          <li>Referring website information</li>
-        </ul>
-        <p>
-          This information is used solely for website maintenance, security, and
-          to improve the educational content. Logs are automatically deleted
-          after a short period.
-        </p>
+        .lux-bg {
+          background: linear-gradient(
+              180deg,
+              rgba(6, 8, 12, 1) 0%,
+              rgba(12, 10, 18, 1) 100%
+            ),
+            radial-gradient(600px 400px at 10% 10%, rgba(126, 58, 255, 0.08), transparent 20%),
+            radial-gradient(500px 300px at 90% 90%, rgba(0, 255, 200, 0.04), transparent 25%);
+          background-blend-mode: screen, overlay;
+        }
 
-        <h3>3.2 Open Source Contributions</h3>
-        <p>
-          If you choose to contribute to the Javaistic project through our
-          public GitHub repository, any information you provide (such as GitHub
-          username, email for commits, or pull request content) will be handled
-          according to GitHub&apos;s privacy policies and our open source
-          licensing terms.
-        </p>
+        .terminal {
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "JetBrains Mono", monospace;
+          color: #b9f6ca;
+          background: rgba(2, 6, 12, 0.45);
+          border: 1px solid rgba(255, 255, 255, 0.04);
+          box-shadow: 0 6px 30px rgba(2, 6, 12, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+          backdrop-filter: blur(6px) saturate(120%);
+        }
 
-        <h2>4. How We Use Information</h2>
-        <p>Any information we may temporarily collect is used only for:</p>
-        <ul>
-          <li>Maintaining and improving the website&apos;s functionality</li>
-          <li>Ensuring platform security and preventing abuse</li>
-          <li>
-            Analyzing general usage patterns to improve educational content
-          </li>
-          <li>Complying with legal obligations</li>
-        </ul>
-        <p>
-          We do not use information for marketing, advertising, or selling to
-          third parties.
-        </p>
+        .term-line {
+          opacity: 0;
+          transform: translateY(6px);
+          animation: lineIn 1s ease forwards;
+        }
 
-        <h2>5. Third-Party Services</h2>
-        <h3>5.1 Hosting Provider</h3>
-        <p>
-          Javaistic may be hosted on third-party platforms (such as Vercel,
-          Netlify, or GitHub Pages). These providers may collect their own
-          technical logs according to their privacy policies. We encourage you
-          to review their policies if you have concerns.
-        </p>
+        .term-line:nth-child(1) {
+          animation-delay: 0.3s;
+        }
 
-        <h3>5.2 External Links</h3>
-        <p>
-          Our educational content may contain links to third-party websites,
-          documentation, or resources. We are not responsible for the privacy
-          practices of these external sites. Please review their privacy
-          policies when visiting them.
-        </p>
+        .term-line:nth-child(2) {
+          animation-delay: 0.7s;
+        }
 
-        <h3>5.3 Open Source Dependencies</h3>
-        <p>
-          Javaistic uses various open source libraries and frameworks. These
-          dependencies may have their own data collection practices. We select
-          dependencies carefully and prefer those with minimal or no data
-          collection.
-        </p>
+        .term-line:nth-child(3) {
+          animation-delay: 1.1s;
+        }
 
-        <h2>6. Data Security</h2>
-        <p>
-          Since we do not collect personal information, data security concerns
-          are minimal. However, we implement reasonable security measures:
-        </p>
-        <ul>
-          <li>Use of HTTPS encryption for all connections</li>
-          <li>Regular security updates and maintenance</li>
-          <li>Limited server access and monitoring</li>
-          <li>Open source code allows for community security review</li>
-        </ul>
+        .term-line:nth-child(4) {
+          animation-delay: 1.5s;
+        }
 
-        <h2>7. Children&apos;s Privacy</h2>
-        <p>
-          Javaistic is an educational platform intended for learners of all ages
-          interested in Java programming. Since we do not collect personal
-          information, there are no special considerations for children&apos;s
-          data. However, we recommend that children under 13 have parental
-          guidance when accessing technical content.
-        </p>
+        @keyframes lineIn {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
 
-        <h2>8. International Users</h2>
-        <p>
-          As an open source educational platform, Javaistic is accessible
-          worldwide. Since we do not collect personal information, international
-          data transfer concerns do not apply to our service.
-        </p>
+        .term-progress {
+          height: 10px;
+          width: 100%;
+          background: linear-gradient(90deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02));
+          border-radius: 6px;
+          overflow: hidden;
+          margin-top: 12px;
+          position: relative;
+          border: 1px solid rgba(255, 255, 255, 0.03);
+        }
 
-        <h2>9. Open Source Transparency</h2>
-        <p>
-          Being an open source project, our code and practices are transparent
-          and open to public review. This includes our privacy practices and any
-          data handling procedures. Community members can review and contribute
-          to improving our privacy protections.
-        </p>
-        <p>
-          Javaistic uses a dual licensing model: source code is licensed under
-          AGPL-3.0, while written content is licensed under CC BY-NC-SA 4.0. All
-          licenses are publicly available in our repository.
-        </p>
+        .term-progress .bar {
+          height: 100%;
+          width: 0%;
+          background: linear-gradient(90deg, rgba(0, 255, 200, 0.18), rgba(126, 58, 255, 0.18));
+          box-shadow: 0 6px 18px rgba(126, 58, 255, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+          border-radius: 6px;
+          transition: width 0.6s cubic-bezier(0.2, 0.9, 0.2, 1);
+        }
 
-        <h2>10. Changes to This Privacy Policy</h2>
-        <p>
-          We may update this Privacy Policy from time to time to reflect changes
-          in our practices or legal requirements. Changes will be:
-        </p>
-        <ul>
-          <li>Committed to our public repository</li>
-          <li>Documented in the change history</li>
-          <li>Communicated through repository announcements or releases</li>
-        </ul>
-        <p>
-          Major changes that affect user privacy will be clearly highlighted.
-        </p>
+        .cursor {
+          display: inline-block;
+          width: 8px;
+          height: 18px;
+          background: #b9f6ca;
+          margin-left: 6px;
+          border-radius: 2px;
+          animation: blink 1s steps(2, end) infinite;
+          vertical-align: text-bottom;
+        }
 
-        <h2>11. Contact Information</h2>
-        <p>
-          If you have any questions, concerns, or requests regarding this
-          Privacy Policy, please contact us:
-        </p>
-        <ul>
-          <li>
-            <strong>GitHub Repository:</strong> Our public repository issues or
-            discussions
-          </li>
-          <li>
-            <strong>Community Channels:</strong> Discord, forums, or other
-            community platforms
-          </li>
-          <li>
-            <strong>Email:</strong> Through community maintainers (available in
-            repository)
-          </li>
-        </ul>
+        @keyframes blink {
+          50% {
+            opacity: 0;
+          }
+        }
 
-        <h2>12. Your Rights</h2>
-        <p>
-          Since we do not collect personal information, most privacy rights
-          concerns do not apply. However, you have the right to:
-        </p>
-        <ul>
-          <li>Access our open source code and review our practices</li>
-          <li>Contribute improvements to our privacy protections</li>
-          <li>
-            Use the platform anonymously without providing any personal
-            information
-          </li>
-          <li>Request removal of any inadvertently collected information</li>
-        </ul>
-
-        <h2>13. Governing Law</h2>
-        <p>
-          This Privacy Policy is governed by applicable laws with a focus on
-          open source and educational use principles. As an international open
-          source project, we strive to comply with privacy best practices
-          globally.
-        </p>
-      </div>
-    </main>
+        .glass-accent {
+          background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+          border: 1px solid rgba(255, 255, 255, 0.02);
+          backdrop-filter: blur(6px);
+        }
+      `}</style>
+    </div>
   );
 }
