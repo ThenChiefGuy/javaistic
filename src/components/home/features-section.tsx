@@ -22,7 +22,7 @@ export function FeaturesSection() {
         onClick: () => (window.location.href = "/docs"),
         imageRotation: 0.5,
         imageAlt:
-          "Beautiful user interface design showcasing Javaistic's clean and modern look",
+          "Beautiful user interface design showcasing HabibiJava's clean and modern look",
         imageWidth: 400,
         imageHeight: 300,
       },
@@ -52,7 +52,7 @@ export function FeaturesSection() {
           "group-hover:text-purple-600 dark:group-hover:text-purple-400 border-purple-500/20 bg-purple-500/10 text-purple-600 dark:border-purple-400/30 dark:bg-purple-400/10 dark:text-purple-400",
         gradientColors: "bg-gradient-to-br from-purple-500/10 to-pink-500/10",
         onClick: () =>
-          window.open("https://github.com/javaistic/javaistic", "_blank"),
+          window.open("#", "_blank"),
         imageRotation: 0.5,
         imageAlt: "Open source community collaboration and GitHub repository",
         imageWidth: 400,
@@ -82,7 +82,7 @@ export function FeaturesSection() {
         className="mt-4 mb-16 max-w-3xl text-lg font-medium text-neutral-700 dark:text-neutral-300"
         variants={ANIMATION_VARIANTS.item}
       >
-        At Javaistic, every feature is designed to make learning effortless and
+        At HabibiJava, every feature is designed to make learning effortless and
         inspiring.
       </motion.p>
       <motion.div
