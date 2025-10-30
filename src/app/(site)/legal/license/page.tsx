@@ -6,7 +6,7 @@ export default function LicensePage(): React.ReactElement {
           Licensing
         </h1>
         <p className="mb-6 text-lg text-neutral-600 dark:text-neutral-400">
-          Javaistic uses a dual licensing model for different types of content.
+          HabibiJava uses a dual licensing model for different types of content.
         </p>
         <div className="text-sm text-neutral-500 dark:text-neutral-500">
           <p>
@@ -20,7 +20,7 @@ export default function LicensePage(): React.ReactElement {
       <div className="prose prose-neutral dark:prose-invert max-w-none">
         <h2>Dual License Overview</h2>
         <p>
-          Javaistic is licensed under a <strong>dual license</strong> model to
+          HabibiJava is licensed under a <strong>dual license</strong> model to
           appropriately protect different types of content while maintaining
           open source principles:
         </p>
@@ -40,7 +40,7 @@ export default function LicensePage(): React.ReactElement {
             </span>
           </div>
           <p className="mb-4">
-            The source code of Javaistic is licensed under the AGPL-3.0, which
+            The source code of HabibiJava is licensed under the AGPL-3.0, which
             is a strong copyleft license that ensures:
           </p>
           <ul className="mb-4">
