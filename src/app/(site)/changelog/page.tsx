@@ -1,300 +1,251 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import {
-  Calendar,
-  AlertCircle,
-  RotateCcw,
-  ExternalLink,
-  AlertTriangle,
-} from "lucide-react";
-import { extractWhatsNew } from "@/lib/github";
+import { useEffect } from "react";
 
-interface ChangelogEntry {
-  version: string;
-  date: string;
-  body: string;
-  prerelease: boolean;
-  author: {
-    name: string;
-    avatar: string;
-  };
-}
-
-export default function ChangelogPage() {
-  const [entries, setEntries] = useState<ChangelogEntry[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [filter, setFilter] = useState<"all" | "stable" | "prerelease">("all");
-
-  const fetchReleases = async (skipCache = false) => {
-    try {
-      setLoading(true);
-      const url = skipCache ? `/api/releases?t=${Date.now()}` : "/api/releases";
-      const response = await fetch(url, {
-        cache: skipCache ? "no-store" : "default",
-        headers: skipCache
-          ? { Pragma: "no-cache", "Cache-Control": "no-cache" }
-          : {},
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch releases: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      setEntries(data);
-      setError(null);
-    } catch (err) {
-      console.error("Error fetching releases:", err);
-      setError(
-        err instanceof Error ? err.message : "Failed to fetch changelog",
-      );
-    } finally {
-      setLoading(false);
-      setIsRefreshing(false);
-    }
-  };
-
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    await fetchReleases(true); // Skip cache on manual refresh
-  };
-
+export default function StorePage() {
   useEffect(() => {
-    fetchReleases();
+    const bar = document.getElementById("bar") as HTMLDivElement | null;
+    let pct = 0;
+    const steps = [8, 16, 5, 20, 10, 9, 12, 20];
+    let i = 0;
+
+    function advance() {
+      if (i >= steps.length) {
+        pct = 100;
+        if (bar) bar.style.width = pct + "%";
+        return;
+      }
+      pct = Math.min(99, pct + steps[i]);
+      if (bar) bar.style.width = pct + "%";
+      i++;
+      setTimeout(advance, 500 + Math.random() * 900);
+    }
+
+    setTimeout(advance, 700);
+
+    const typed = document.getElementById("typed") as HTMLSpanElement | null;
+    const messages = [
+      "checking packets...",
+      "patching core modules...",
+      "optimizing assets...",
+      "finalizing...",
+    ];
+    let tIndex = 0;
+
+    function cycleTyped() {
+      if (typed) typed.textContent = messages[tIndex];
+      tIndex = (tIndex + 1) % messages.length;
+      setTimeout(cycleTyped, 2500 + Math.random() * 1200);
+    }
+
+    cycleTyped();
   }, []);
 
   return (
-    <div className="mx-auto w-full max-w-4xl px-4 py-36 pb-14">
-      <div className="mb-12 text-center">
-        <h1 className="font-funnel-display bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-700 bg-clip-text text-4xl font-bold tracking-tight text-transparent sm:text-5xl dark:from-neutral-100 dark:via-neutral-200 dark:to-neutral-300">
-          Changelog
-        </h1>
-        <p className="mt-4 text-lg text-neutral-600 dark:text-neutral-400">
-          Latest releases and updates from HabibiJava
-        </p>
-        <button
-          onClick={handleRefresh}
-          disabled={isRefreshing}
-          className="border-primary/20 bg-primary/10 text-primary hover:border-primary/40 hover:bg-primary/20 mt-6 inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-all disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          <RotateCcw
-            className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`}
-          />
-          {isRefreshing ? "Refreshing..." : "Refresh"}
-        </button>
+    <div className="lux-bg min-h-screen text-slate-300 antialiased">
+      <div className="min-h-screen flex flex-col lg:flex-row items-center justify-center p-6 lg:p-12 gap-10">
+        {/* Header */}
+        <header className="max-w-xl">
+          <div className="p-6 rounded-2xl terminal glass-accent">
+            <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white">
+              Coming Soon
+            </h1>
+            <p className="mt-3 text-sm text-slate-300/80">
+              A new digital experience is being crafted. Stay tuned — we’re
+              building something truly special.
+            </p>
+
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              <a
+                href="https://ggdonutsmp.netlify.app"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-red-600/80 to-green-500/80 shadow-md hover:scale-[1.01] transition"
+              >
+                Dashboard
+              </a>
+              <a
+                href="https://discord.gg/HyTFhjMwCz"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-cyan-600/80 to-green-500/80 shadow-md hover:scale-[1.01] transition"
+              >
+                Discord
+              </a>
+            </div>
+
+            <p className="mt-5 text-xs text-slate-400">
+              Crafted by{" "}
+              <a
+                href="https://github.com/septydev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white underline"
+              >
+                TheBlackSpider
+              </a>
+            </p>
+          </div>
+        </header>
+
+        {/* Terminal */}
+        <main className="w-full max-w-md">
+          <div className="terminal p-6 rounded-2xl">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="w-3 h-3 rounded-full bg-red-500/90 inline-block"></span>
+              <span className="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
+              <span className="w-3 h-3 rounded-full bg-green-500/70 inline-block"></span>
+              <div className="ml-auto text-xs text-slate-400">Maintenance mode</div>
+            </div>
+
+            <div className="text-[13px] leading-6">
+              <div className="term-line">
+                <span className="text-slate-400">[</span>
+                <span className="text-slate-200">init</span>
+                <span className="text-slate-400">]</span> Boot sequence started
+              </div>
+              <div className="term-line">
+                <span className="text-slate-400">[</span>
+                <span className="text-slate-200">update</span>
+                <span className="text-slate-400">]</span> Deploying assets — optimizing shaders
+              </div>
+              <div className="term-line">
+                <span className="text-slate-400">[</span>
+                <span className="text-slate-200">status</span>
+                <span className="text-slate-400">]</span> Expected return:{" "}
+                <strong className="text-white">~ 3 hours</strong>
+              </div>
+
+              <div className="term-line mt-3">
+                <div className="term-progress">
+                  <div id="bar" className="bar"></div>
+                </div>
+              </div>
+
+              <div className="mt-4 text-xs text-slate-400 font-mono">
+                Need help? Visit our{" "}
+                <a
+                  href="https://discord.domain.com"
+                  className="underline text-slate-200 hover:text-white"
+                >
+                  Discord
+                </a>{" "}
+                or{" "}
+                <a
+                  href="https://dash.domain.com"
+                  className="underline text-slate-200 hover:text-white"
+                >
+                  Dashboard
+                </a>
+              </div>
+
+              <div>
+                <span className="text-green-300">root@project</span>:
+                <span className="text-slate-400">~</span>$ <span id="typed">checking integrity...</span>
+                <span className="cursor" aria-hidden="true"></span>
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
 
-      <div className="mb-12 flex justify-center gap-4">
-        <button
-          onClick={() => setFilter("all")}
-          className={`rounded-lg border px-4 py-2 text-sm font-medium transition-all ${
-            filter === "all"
-              ? "border-primary/20 bg-primary/10 text-primary"
-              : "border-border bg-background text-foreground hover:bg-accent"
-          }`}
-        >
-          All Releases
-        </button>
-        <button
-          onClick={() => setFilter("stable")}
-          className={`rounded-lg border px-4 py-2 text-sm font-medium transition-all ${
-            filter === "stable"
-              ? "border-green-500/20 bg-green-500/10 text-green-600 dark:text-green-400"
-              : "border-border bg-background text-foreground hover:bg-accent"
-          }`}
-        >
-          Stable
-        </button>
-        <button
-          onClick={() => setFilter("prerelease")}
-          className={`rounded-lg border px-4 py-2 text-sm font-medium transition-all ${
-            filter === "prerelease"
-              ? "border-yellow-500/20 bg-yellow-500/10 text-yellow-600 dark:text-yellow-400"
-              : "border-border bg-background text-foreground hover:bg-accent"
-          }`}
-        >
-          Prerelease
-        </button>
-      </div>
+      {/* Embedded Styles */}
+      <style jsx>{`
+        :root {
+          --bg-900: #05060a;
+          --bg-800: #0b0d13;
+          --accent-1: rgba(126, 58, 255, 0.12);
+          --accent-2: rgba(0, 255, 200, 0.06);
+        }
 
-      <style>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
+        .lux-bg {
+          background: linear-gradient(
+              180deg,
+              rgba(6, 8, 12, 1) 0%,
+              rgba(12, 10, 18, 1) 100%
+            ),
+            radial-gradient(600px 400px at 10% 10%, rgba(126, 58, 255, 0.08), transparent 20%),
+            radial-gradient(500px 300px at 90% 90%, rgba(0, 255, 200, 0.04), transparent 25%);
+          background-blend-mode: screen, overlay;
+        }
+
+        .terminal {
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "JetBrains Mono", monospace;
+          color: #b9f6ca;
+          background: rgba(2, 6, 12, 0.45);
+          border: 1px solid rgba(255, 255, 255, 0.04);
+          box-shadow: 0 6px 30px rgba(2, 6, 12, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+          backdrop-filter: blur(6px) saturate(120%);
+        }
+
+        .term-line {
+          opacity: 0;
+          transform: translateY(6px);
+          animation: lineIn 1s ease forwards;
+        }
+
+        .term-line:nth-child(1) {
+          animation-delay: 0.3s;
+        }
+
+        .term-line:nth-child(2) {
+          animation-delay: 0.7s;
+        }
+
+        .term-line:nth-child(3) {
+          animation-delay: 1.1s;
+        }
+
+        .term-line:nth-child(4) {
+          animation-delay: 1.5s;
+        }
+
+        @keyframes lineIn {
           to {
             opacity: 1;
             transform: translateY(0);
           }
         }
-        .fade-in-up {
-          animation: fadeInUp 0.6s ease-out forwards;
+
+        .term-progress {
+          height: 10px;
+          width: 100%;
+          background: linear-gradient(90deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02));
+          border-radius: 6px;
+          overflow: hidden;
+          margin-top: 12px;
+          position: relative;
+          border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .term-progress .bar {
+          height: 100%;
+          width: 0%;
+          background: linear-gradient(90deg, rgba(0, 255, 200, 0.18), rgba(126, 58, 255, 0.18));
+          box-shadow: 0 6px 18px rgba(126, 58, 255, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+          border-radius: 6px;
+          transition: width 0.6s cubic-bezier(0.2, 0.9, 0.2, 1);
+        }
+
+        .cursor {
+          display: inline-block;
+          width: 8px;
+          height: 18px;
+          background: #b9f6ca;
+          margin-left: 6px;
+          border-radius: 2px;
+          animation: blink 1s steps(2, end) infinite;
+          vertical-align: text-bottom;
+        }
+
+        @keyframes blink {
+          50% {
+            opacity: 0;
+          }
+        }
+
+        .glass-accent {
+          background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+          border: 1px solid rgba(255, 255, 255, 0.02);
+          backdrop-filter: blur(6px);
         }
       `}</style>
-
-      {loading && (
-        <div className="relative">
-          <div className="bg-muted absolute top-0 bottom-0 left-4 w-px sm:left-6 sm:w-0.5"></div>
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="relative mb-12">
-              <div className="flex items-start">
-                <div className="mr-4 flex-shrink-0">
-                  <div className="bg-muted-foreground mt-2 h-4 w-4 animate-pulse rounded-full"></div>
-                </div>
-                <div className="flex-1">
-                  <div className="bg-muted-foreground mb-2 h-6 w-32 animate-pulse rounded"></div>
-                  <div className="mb-4 flex gap-4">
-                    <div className="bg-muted-foreground h-4 w-20 animate-pulse rounded"></div>
-                    <div className="bg-muted-foreground h-4 w-24 animate-pulse rounded"></div>
-                    <div className="bg-muted-foreground h-4 w-16 animate-pulse rounded"></div>
-                  </div>
-                  <div className="bg-muted animate-pulse rounded-lg p-6">
-                    <div className="bg-muted-foreground mb-4 h-32 rounded"></div>
-                    <div className="bg-muted-foreground mb-2 h-4 w-full rounded"></div>
-                    <div className="bg-muted-foreground mb-2 h-4 w-3/4 rounded"></div>
-                    <div className="bg-muted-foreground h-4 w-1/2 rounded"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {error && (
-        <div className="border-destructive/20 bg-destructive/10 mb-8 rounded-lg border p-4">
-          <div className="flex items-center gap-3">
-            <AlertCircle className="text-destructive h-5 w-5" />
-            <div className="flex-1">
-              <h3 className="text-destructive font-semibold">
-                Error Loading Changelog
-              </h3>
-              <p className="text-destructive/80 text-sm">{error}</p>
-            </div>
-            <button
-              onClick={() => fetchReleases()}
-              className="border-destructive/20 bg-destructive/10 text-destructive hover:border-destructive/40 hover:bg-destructive/20 inline-flex items-center gap-2 rounded-lg border px-3 py-1.5 text-sm font-medium transition-all"
-            >
-              Try Again
-            </button>
-          </div>
-        </div>
-      )}
-
-      {!loading && entries.length === 0 && !error && (
-        <div className="border-border bg-card rounded-lg border p-8 text-center">
-          <p className="text-muted-foreground">
-            No releases found. Check back soon!
-          </p>
-        </div>
-      )}
-
-      <div className="relative">
-        <div className="absolute top-0 bottom-0 left-4 w-px bg-gradient-to-b from-sky-400 to-sky-600 sm:left-6 sm:w-0.5 dark:from-sky-500 dark:to-sky-700"></div>
-        {(() => {
-          const filteredEntries = entries.filter(
-            (entry) =>
-              filter === "all" ||
-              (filter === "prerelease" ? entry.prerelease : !entry.prerelease),
-          );
-          return filteredEntries.map((entry, index) => (
-            <div
-              key={entry.version}
-              className="fade-in-up relative mb-10 opacity-0"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <div className="flex items-start">
-                <div className="mr-6 flex-shrink-0 sm:mr-10">
-                  <div
-                    className={`mt-2 h-4 w-4 cursor-pointer rounded-full border-4 border-white shadow-sm transition-colors duration-200 hover:bg-sky-600 dark:border-neutral-900 ${index === 0 ? "bg-green-500" : "bg-sky-500"}`}
-                  ></div>
-                </div>
-                <div className="flex-1">
-                  <div className="mb-2 flex items-center gap-3">
-                    <h3 className="bg-gradient-to-r from-neutral-900 to-neutral-700 bg-clip-text text-xl font-bold text-transparent dark:from-neutral-100 dark:to-neutral-300">
-                      {entry.version}
-                    </h3>
-                    {entry.prerelease && (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-yellow-200 px-2 py-1 text-xs font-semibold text-yellow-700 dark:bg-yellow-800 dark:text-yellow-300">
-                        <AlertTriangle className="h-3 w-3" /> PRE-RELEASE
-                      </span>
-                    )}
-                    {index === 0 && (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-green-200 px-2 py-1 text-xs font-semibold text-green-700 dark:bg-green-800 dark:text-green-300">
-                        LATEST
-                      </span>
-                    )}
-                  </div>
-                  <div className="mb-4 flex items-center gap-4 text-sm text-neutral-500 dark:text-neutral-400">
-                    <div className="flex items-center gap-1">
-                      <Calendar className="h-4 w-4" />
-                      {entry.date}
-                    </div>
-                    {entry.author && (
-                      <div className="flex items-center gap-2">
-                        <img
-                          src={entry.author.avatar}
-                          alt={entry.author.name}
-                          className="h-5 w-5 rounded-full"
-                        />
-                        <span>
-                          by <strong>{entry.author.name}</strong>
-                        </span>
-                      </div>
-                    )}
-                    <a
-                      href={`https://github.com/javaistic/javaistic/releases/tag/${entry.version}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 font-semibold text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300"
-                    >
-                      View on GitHub <ExternalLink className="h-3 w-3" />
-                    </a>
-                  </div>
-                  <div className="prose prose-sm dark:prose-invert max-w-none">
-                    <div className="bg-card border-border hover:border-border/80 rounded-xl border p-6 transition-all duration-200 hover:shadow-lg">
-                      <img
-                        src={`https://og-javaistic.vercel.app/og?title=${entry.version} Release`}
-                        alt="Javaistic Badge"
-                        className="border-border mt-0 mb-4 w-full rounded-xl border"
-                        loading="lazy"
-                      />
-                      <h4 className="text-card-foreground mb-3 text-lg font-bold">
-                        What&apos;s New
-                      </h4>
-                      <div className="text-muted-foreground leading-relaxed whitespace-pre-wrap">
-                        {extractWhatsNew(entry.body)}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ));
-        })()}
-      </div>
-
-      <div className="border-border bg-card mt-16 rounded-lg border p-6">
-        <h2 className="text-card-foreground mb-2 font-semibold">
-          About This Changelog
-        </h2>
-        <p className="text-muted-foreground text-sm">
-          This changelog is automatically synced with{" "}
-          <a
-            href="https://github.com/javaistic/javaistic/releases"
-            className="text-primary hover:text-primary/80"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            GitHub Releases
-          </a>{" "}
-          and cached for optimal performance. Updates appear within 24 hours.
-        </p>
-      </div>
     </div>
   );
 }
