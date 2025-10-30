@@ -73,7 +73,7 @@ export default function ChangelogPage() {
           Changelog
         </h1>
         <p className="mt-4 text-lg text-neutral-600 dark:text-neutral-400">
-          Latest releases and updates from Javaistic
+          Latest releases and updates from HabibiJava
         </p>
         <button
           onClick={handleRefresh}
